@@ -11,7 +11,7 @@ export const PageBanner: React.FC<PageBannerProps> = ({ imageUrl }) => {
     <div
       className="relative w-full flex flex-col items-center justify-center border-b border-[#F49cbb]"
       style={{
-        height: '750px',
+        height: '770px',
         backgroundColor: '#FFFFFF', // Solid white base
         backgroundImage: imageUrl ? `url(${imageUrl})` : 'none',
         backgroundSize: 'cover',
