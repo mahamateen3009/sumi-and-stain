@@ -135,7 +135,7 @@ export default function ContactPage() {
                 )}
 
                 <button type="submit" disabled={isSubmitting || rateLimited}
-                  className="mx-auto block px-12 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 shadow-sm"
+                  className="mx-auto  px-12 py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 transition-opacity hover:opacity-90 shadow-sm"
                   style={{ backgroundColor: '#AF8A69', color: '#FFFFFF' }}>
                   {isSubmitting ? "Sending..." : (
                     <><Mail size={16} /> Send Message</>

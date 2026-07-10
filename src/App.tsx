@@ -5,7 +5,7 @@ import { Route, Switch, Router as WouterRouter, Redirect } from 'wouter';
 import { AuthProvider } from './contexts/AuthContext';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import ProtectedRoute from './components/ProtectedRoute'; // Ensure this exists!
+import ProtectedRoute from './components/ProtectedRoute';
 import AdminPage from './pages/AdminPage';
 import HennaPage from './pages/HennaPage';
 import AnimePage from './pages/AnimePage';
@@ -16,7 +16,8 @@ import NotFound from './pages/not-found';
 const queryClient = new QueryClient();
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
-  <div className="min-h-screen flex flex-col bg-[#E0DCBE]">
+  // pt-[70px] pushes the content down so the fixed navbar doesn't cover it
+  <div className="min-h-screen flex flex-col bg-[#E0DCBE] pt-17.5">
     <Navbar />
     <main className="grow">{children}</main>
     <Footer />
@@ -27,8 +28,6 @@ function Router() {
   return (
     <Switch>
       <Route path="/"><Redirect to="/henna" /></Route>
-    
-      {/* Protected Admin Route */}
       <Route path="/admin">
         <ProtectedRoute>
           <AdminPage />
@@ -44,11 +43,14 @@ function Router() {
 }
 
 function App() {
+  // Safe fallback for env variable
+  const base = (import.meta as any).env?.BASE_URL?.replace(/\/$/, '') || '';
+  
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <WouterRouter base={base}>
             <Router />
           </WouterRouter>
           <Toaster />
