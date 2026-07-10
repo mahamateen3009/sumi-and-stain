@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   // pt-[70px] pushes the content down so the fixed navbar doesn't cover it
-  <div className="min-h-screen flex flex-col bg-[#E0DCBE] pt-15">
+  <div className="min-h-screen flex flex-col bg-[#E0DCBE] pt-12">
     <Navbar />
     <main className="grow">{children}</main>
     <Footer />
