@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 const PublicLayout = ({ children }: { children: React.ReactNode }) => (
   // pt-[70px] pushes the content down so the fixed navbar doesn't cover it
-  <div className="min-h-screen flex flex-col bg-[#E0DCBE] pt-17.5">
+  <div className="min-h-screen flex flex-col bg-[#E0DCBE] pt-20">
     <Navbar />
     <main className="grow">{children}</main>
     <Footer />
@@ -45,7 +45,7 @@ function Router() {
 function App() {
   // Safe fallback for env variable
   const base = (import.meta as any).env?.BASE_URL?.replace(/\/$/, '') || '';
-  
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
