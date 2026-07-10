@@ -7,7 +7,7 @@ import { CheckCircle2, Mail } from 'lucide-react';
 import { PageBanner } from '../components/PageBanner';
 
 // Import your local asset
-import contactBanner from '../assets/contact-us-banner.avif';
+import contactBanner from '../assets/contact.png';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name is too short'),
