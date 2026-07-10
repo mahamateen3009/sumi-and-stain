@@ -1,0 +1,9 @@
+# Ignore everything in the parent folders
+../../
+
+# Standard ignores
+node_modules/
+dist/
+.env
+.vscode/
+.DS_Store

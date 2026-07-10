@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-border: var(--primary-border);
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-border: var(--secondary-border);
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-muted-border: var(--muted-border);
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-accent-border: var(--accent-border);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-destructive-border: var(--destructive-border);
+
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: var(--sidebar-primary-border);
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: var(--sidebar-accent-border);
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  --font-sans: var(--app-font-sans);
+  --font-serif: var(--app-font-serif);
+  --font-mono: var(--app-font-mono);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ─── BRAND PALETTE ────────────────────────────────────────────────────────
+   --bg-main        #CBEEF3  Light Ice Blue   → page background
+   --card-bg        #AFD2E9  Cornflower Blue  → artwork cards
+   --footer-nav-bg  #F49cbb  Soft Pink        → navbar & footer
+   --banner-accent  #E36397  Vibrant Pink     → banner gradient & buttons
+   --text-main      #1A2A3A  Dark Muted Navy  → all text on light bg
+   --text-light     #FFFFFF  White            → text on pink navbar/footer
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* ── Canonical brand tokens ── */
+  --bg-main:       #CBEEF3;
+  --card-bg:       #AFD2E9;
+  --footer-nav-bg: #F49cbb;
+  --banner-accent: #E36397;
+  --text-main:     #1A2A3A;
+  --text-light:    #FFFFFF;
+
+  /* ── Tailwind HSL mappings ── */
+  /* Background: Light Ice Blue #CBEEF3 → H=188, S=64%, L=87% */
+  --background: 188 64% 87%;
+  --foreground:  210 37% 16%;   /* Dark Muted Navy #1A2A3A */
+
+  /* Borders & Inputs */
+  --border: 333 68% 65%;   /* Vibrant Pink tint */
+  --input:  188 50% 92%;
+  --ring:   333 68% 57%;
+
+  /* Cards: Cornflower Blue #AFD2E9 → H=207, S=47%, L=80% */
+  --card:            207 47% 80%;
+  --card-foreground: 210 37% 16%;
+  --card-border:     207 35% 68%;
+
+  /* Popovers */
+  --popover:            188 40% 92%;
+  --popover-foreground: 210 37% 16%;
+  --popover-border:     207 35% 68%;
+
+  /* Primary: Vibrant Pink #E36397 */
+  --primary:            333 68% 57%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Secondary: Soft Pink navbar */
+  --secondary:            337 84% 78%;
+  --secondary-foreground: 0 0% 100%;
+
+  /* Muted */
+  --muted:            188 30% 90%;
+  --muted-foreground: 210 25% 38%;
+
+  /* Accent */
+  --accent:            207 47% 84%;
+  --accent-foreground: 210 37% 16%;
+
+  /* Destructive */
+  --destructive:            0 60% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Sidebar */
+  --sidebar:            188 40% 90%;
+  --sidebar-foreground: 210 37% 16%;
+  --sidebar-border:     207 35% 72%;
+  --sidebar-primary:    333 68% 57%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent:     207 47% 84%;
+  --sidebar-accent-foreground: 210 37% 16%;
+  --sidebar-ring:       333 68% 57%;
+
+  /* Fonts */
+  --app-font-sans:  'Inter', sans-serif;
+  --app-font-serif: 'Cinzel', serif;
+  --app-font-mono:  Menlo, monospace;
+
+  --radius: 0.75rem;
+
+  /* Shadows: navy tint for depth */
+  --shadow-sm:  0 1px 3px 0 rgba(26, 42, 58, 0.10);
+  --shadow:     0 4px 12px -1px rgba(26, 42, 58, 0.14);
+  --shadow-md:  0 10px 24px -3px rgba(26, 42, 58, 0.16);
+  --shadow-lg:  0 20px 40px -5px rgba(26, 42, 58, 0.20);
+  --shadow-2xs: 0 1px 2px 0 rgba(26, 42, 58, 0.08);
+  --shadow-xs:  0 2px 4px 0 rgba(26, 42, 58, 0.11);
+
+  /* Computed borders */
+  --opaque-button-border-intensity: -8;
+  --button-outline: rgba(227, 99, 151, 0.35);
+  --badge-outline:  rgba(227, 99, 151, 0.20);
+  --elevate-1: rgba(175, 210, 233, 0.40);
+  --elevate-2: rgba(175, 210, 233, 0.70);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+@layer base {
+  * { @apply border-border; }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    min-height: 100vh;
+    font-weight: 500;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  p, span, label, li, a {
+    font-weight: 500;
+    color: var(--text-main);
+  }
+}
+
+@layer utilities {
+  /* ── Glassmorphism — cornflower blue glass ──────────────────────────────── */
+
+  /* Artwork cards — Cornflower Blue #AFD2E9 at 90% + blur + navy shadow */
+  .glass-card {
+    background: rgba(175, 210, 233, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(227, 99, 151, 0.22);
+    box-shadow:
+      0 2px 8px rgba(26, 42, 58, 0.10),
+      0 8px 24px rgba(26, 42, 58, 0.13);
+    transition:
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.25s ease;
+  }
+
+  .glass-card:hover {
+    box-shadow:
+      0 4px 16px rgba(26, 42, 58, 0.14),
+      0 16px 40px rgba(26, 42, 58, 0.18);
+    border-color: rgba(227, 99, 151, 0.40);
+  }
+
+  /* Panels — contact form, modals, banners — Ice Blue at 93% */
+  .glass-panel {
+    background: rgba(203, 238, 243, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(175, 210, 233, 0.50);
+    box-shadow: 0 8px 32px rgba(26, 42, 58, 0.14);
+  }
+
+  /* Sticky navigation bar — Soft Pink #F49cbb */
+  .glass-nav {
+    background: rgba(244, 156, 187, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+    box-shadow: 0 2px 12px rgba(26, 42, 58, 0.12);
+  }
+
+  /* Subtle text glow */
+  .text-glow {
+    text-shadow: 0 0 24px rgba(26, 42, 58, 0.15);
+  }
+
+  /* Form inputs */
+  .dream-input {
+    background: rgba(203, 238, 243, 0.80);
+    border: 1px solid rgba(175, 210, 233, 0.60);
+    color: #1A2A3A;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .dream-input:focus {
+    outline: none;
+    border-color: rgba(227, 99, 151, 0.70);
+    box-shadow: 0 0 0 3px rgba(227, 99, 151, 0.18);
+  }
+
+  .dream-input::placeholder {
+    color: rgba(26, 42, 58, 0.38);
+  }
+
+  /* Tag pills on cards */
+  .glass-tag {
+    background: rgba(227, 99, 151, 0.15);
+    border: 1px solid rgba(227, 99, 151, 0.32);
+    color: #1A2A3A;
+    font-weight: 600;
+  }
+
+  /* Primary button — Vibrant Pink */
+  .btn-primary {
+    background: var(--banner-accent);
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    border: 1px solid rgba(26, 42, 58, 0.12);
+    box-shadow: 0 2px 8px rgba(26, 42, 58, 0.18);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover {
+    background: #1A2A3A;
+    border-color: rgba(26, 42, 58, 0.30);
+    box-shadow: 0 4px 16px rgba(26, 42, 58, 0.28);
+  }
+
+  .btn-primary:active  { transform: scale(0.98); }
+  .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+}
