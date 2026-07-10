@@ -4,7 +4,7 @@ import { ArrowUpRight, Github, Linkedin, ExternalLink } from 'lucide-react';
 import { useSiteConfig } from '../hooks/useSiteConfig';
 
 /* ── tokens ── */
-const FOOTER_BG = '#AF8A69'; 
+const FOOTER_BG = '#AF8A69';
 const FG = '#FFFFFF';
 const FG_MUTED = 'rgba(255, 255, 255, 0.68)';
 const FG_HOVER = '#FFFFFF';
@@ -18,7 +18,7 @@ export const Footer = () => {
     if (!href || href.trim() === "" || href === "#") return null;
 
     const finalUrl = href.startsWith('http') ? href : `https://${href}`;
-    
+
     return (
       <li className="flex items-center">
         <a
@@ -43,7 +43,7 @@ export const Footer = () => {
     <footer className="mt-20 relative overflow-hidden" style={{ background: FOOTER_BG, borderTop: '3px solid rgba(255, 255, 255, 0.20)' }}>
       <div className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
-          
+
           <div className="md:col-span-1">
             <h3 className="font-serif text-xl font-bold mb-4" style={{ color: FG }}>About Me</h3>
             <p className="text-sm leading-relaxed" style={{ color: FG_MUTED }}>
@@ -72,8 +72,10 @@ export const Footer = () => {
         </div>
 
         <div className="flex justify-center mt-14">
-          <div className="pt-8 text-center text-xs font-medium px-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.22)', color: FG_MUTED }}>
-            {config?.footer?.copyright || "© 2026 Maha Mateen — All Rights Reserved."}
+          <div className="flex justify-center mt-14">
+            <div className="pt-8 text-center text-xs font-medium px-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.22)', color: FG_MUTED }}>
+              © {new Date().getFullYear()} Maha Mateen — All Rights Reserved.
+            </div>
           </div>
         </div>
       </div>
