@@ -9,13 +9,10 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Simple lock
+  // 1. We keep the body scroll lock for stability
   useEffect(() => {
-    if (artwork) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'auto'; };
   }, [artwork]);
 
   return (
@@ -23,8 +20,9 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
       {artwork && (
         <motion.div
           key="lightbox-backdrop"
-          // Changed to absolute to stop Safari from "locking" the whole viewport
-          className="absolute top-0 left-0 w-full min-h-screen z-9999 bg-slate-900/90 flex items-center justify-center p-4"
+          // Removed 'flex items-center justify-center' from here to prevent layout locking
+          // We use absolute/fixed positioning to allow the modal to manage its own space
+          className="fixed inset-0 z-9999 bg-slate-900/90 p-4 md:flex md:items-center md:justify-center"
           onClick={onClose}
         >
           <button
@@ -34,27 +32,24 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
             <X size={24} />
           </button>
 
-          {/* Panel: Added 'fixed' and 'inset-0' to force its own scroll context */}
+          {/* This panel now manages its own internal overflow */}
           <motion.div
             key="lightbox-panel"
-            className="relative bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row"
+            className="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row mt-12 md:mt-0"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image: Fixed height, no growth */}
-            <div className="w-full md:w-3/5 h-300px md:h-auto bg-gray-100 flex items-center justify-center shrink-0">
+            {/* Image section */}
+            <div className="w-full md:w-3/5 h-300px md:h-auto bg-gray-100 shrink-0">
               <img src={artwork.imageUrl} alt={artwork.title} className="h-full w-full object-contain" />
             </div>
 
-            {/* Scrollable Info: Added 'relative' to force scroll context */}
-            <div className="w-full md:w-2/5 overflow-y-auto p-6 md:p-8">
+            {/* Info section: Ensure this has the scroll capability */}
+            <div
+              className="flex-1 overflow-y-auto p-6 md:p-8"
+              style={{ WebkitOverflowScrolling: 'touch' }}
+            >
               <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
-              <div className="flex flex-wrap gap-2 mb-6">
-                {artwork.tags.map((tag, i) => (
-                  <span key={i} className="bg-gray-100 px-3 py-1 text-xs font-medium rounded-full">{tag}</span>
-                ))}
-              </div>
               <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{artwork.description}</p>
-              {/* Spacer so the last text isn't cut off */}
               <div className="h-20" />
             </div>
           </motion.div>
