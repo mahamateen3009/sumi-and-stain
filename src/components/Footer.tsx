@@ -42,42 +42,46 @@ export const Footer = () => {
   return (
     <footer className="mt-20 relative overflow-hidden" style={{ background: FOOTER_BG, borderTop: '3px solid rgba(255, 255, 255, 0.20)' }}>
       <div className="container mx-auto px-6 py-16 relative z-10">
-        < div className="grid grid-cols-3 gap-6 lg:gap-20">
 
-          <div className="md:col-span-1">
+        {/* Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          {/* About Me Section */}
+          <div className="md:col-span-1 col-span-1">
             <h3 className="font-serif text-xl font-bold mb-4" style={{ color: FG }}>About Me</h3>
             <p className="text-sm leading-relaxed" style={{ color: FG_MUTED }}>
               {config?.footer?.aboutText || "I'm Maha Mateen — an artist who finds beauty in patterns, colour, and craft. Every piece is made with intention."}
             </p>
           </div>
 
-          <div>
-            <h4 className="font-serif text-base font-bold mb-5" style={{ color: FG }}>Explore</h4>
-            <ul className="space-y-3 text-sm">
-              <li><button onClick={scrollToTop} className="flex items-center gap-2 transition-colors duration-200" style={{ color: FG_MUTED }}><ArrowUpRight size={14} /> Back to Top</button></li>
-              <li><Link href="/contact" className="flex items-center gap-2 transition-colors duration-200" style={{ color: FG_MUTED }}><ArrowUpRight size={14} /> Contact & Commission</Link></li>
-            </ul>
-          </div>
+          {/* Explore & Developer Work Grid */}
+          <div className="grid grid-cols-2 col-span-1 md:col-span-2 gap-4">
+            <div>
+              <h4 className="font-serif text-base font-bold mb-5" style={{ color: FG }}>Explore</h4>
+              <ul className="space-y-3 text-sm">
+                <li><button onClick={scrollToTop} className="flex items-center gap-2 transition-colors duration-200" style={{ color: FG_MUTED }}><ArrowUpRight size={14} /> Back to Top</button></li>
+                <li><Link href="/contact" className="flex items-center gap-2 transition-colors duration-200" style={{ color: FG_MUTED }}><ArrowUpRight size={14} /> Contact & Commission</Link></li>
+              </ul>
+            </div>
 
-          <div>
-            <h4 className="font-serif text-base font-bold mb-5" style={{ color: FG }}>Developer Work</h4>
-            <ul className="space-y-3 text-sm">
-              {config?.footer?.projects?.map((proj, idx) => (
-                <SocialLink key={idx} href={proj.url} icon={<ExternalLink size={14} />} label={proj.title} />
-              ))}
-              <SocialLink href={config?.footer?.githubLink} icon={<Github size={14} />} label="GitHub" />
-              <SocialLink href={config?.footer?.linkedinLink} icon={<Linkedin size={14} />} label="LinkedIn" />
-            </ul>
-          </div>
-        </div>
-
-        <div className="flex justify-center mt-14">
-          <div className="flex justify-center mt-14">
-            <div className="pt-8 text-center text-xs font-medium px-4" style={{ borderTop: '1px solid rgba(255, 255, 255, 0.22)', color: FG_MUTED }}>
-              © {new Date().getFullYear()} Maha Mateen — All Rights Reserved.
+            <div>
+              <h4 className="font-serif text-base font-bold mb-5" style={{ color: FG }}>Developer Work</h4>
+              <ul className="space-y-3 text-sm">
+                {config?.footer?.projects?.map((proj, idx) => (
+                  <SocialLink key={idx} href={proj.url} icon={<ExternalLink size={14} />} label={proj.title} />
+                ))}
+                <SocialLink href={config?.footer?.githubLink} icon={<Github size={14} />} label="GitHub" />
+                <SocialLink href={config?.footer?.linkedinLink} icon={<Linkedin size={14} />} label="LinkedIn" />
+              </ul>
             </div>
           </div>
         </div>
+
+        {/* Copyright Footer */}
+        <div className="pt-8 mt-14 text-center text-xs font-medium border-t border-white/20 px-4" style={{ color: FG_MUTED }}>
+          © {new Date().getFullYear()} Maha Mateen — All Rights Reserved.
+        </div>
+
       </div>
     </footer>
   );
