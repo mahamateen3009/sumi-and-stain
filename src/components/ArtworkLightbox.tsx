@@ -9,18 +9,19 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Check if we are on a mobile device (width < 768px)
-  const [isMobile, setIsMobile] = useState(false);
+  // Use CSS media query via matchMedia for better performance
+  const [isMobile, setIsMobile] = React.useState(false);
 
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+  React.useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
   }, []);
 
-  // If mobile, we don't render the lightbox at all, or we handle it via navigation
-  // For now, this simply returns null on mobile to avoid the "broken" overlay
+  // If mobile, don't even render the logic
   if (isMobile) return null;
 
   return (
@@ -34,7 +35,7 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
           className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-8"
           onClick={onClose}
         >
-          {/* Desktop Lightbox content only */}
+          {/* Desktop Lightbox content */}
           <motion.div
             key="lightbox-panel"
             className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-row overflow-hidden shadow-2xl"
