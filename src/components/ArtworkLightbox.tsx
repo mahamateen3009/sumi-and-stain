@@ -9,16 +9,17 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Add this to prevent clicks on mobile
-  const [isDesktop, setIsDesktop] = React.useState(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
+  // Use a simple state-based render check
+  const [isClient, setIsClient] = React.useState(false);
 
   React.useEffect(() => {
-    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    setIsClient(true);
+    // iOS fix: prevent background scroll
+    if (artwork) document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'auto'; };
+  }, [artwork]);
 
-  if (!isDesktop || !artwork) return null;
+  if (!isClient || !artwork) return null;
 
   return (
     <AnimatePresence>
@@ -26,27 +27,28 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-8"
+        className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4 md:p-12"
         onClick={onClose}
       >
-        {/* The Frame */}
         <motion.div
-          className="bg-white rounded-2xl w-full max-w-5xl h-[80vh] flex overflow-hidden shadow-2xl"
+          className="relative bg-white rounded-2xl w-full max-w-5xl h-[80vh] flex flex-col md:flex-row overflow-hidden shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Image Side: Use 'flex items-center justify-center' with 'overflow-hidden' */}
-          <div className="w-3/5 bg-gray-50 flex items-center justify-center overflow-hidden">
+          {/* Image Container: Forced 50% width on desktop, 100% on mobile */}
+          <div className="w-full md:w-3/5 h-1/2 md:h-full bg-gray-100 relative">
             <img
               src={artwork.imageUrl}
               alt={artwork.title}
-              className="max-h-full w-full object-contain" // This forces it to fit
+              className="absolute inset-0 w-full h-full object-contain"
             />
           </div>
 
-          {/* Content Side */}
-          <div className="w-2/5 overflow-y-auto p-10">
-            <h2 className="text-3xl font-bold mb-6">{artwork.title}</h2>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{artwork.description}</p>
+          {/* Content Container */}
+          <div className="w-full md:w-2/5 h-1/2 md:h-full overflow-y-auto p-6 md:p-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4">{artwork.title}</h2>
+            <p className="text-sm md:text-base text-gray-700 leading-relaxed whitespace-pre-wrap">
+              {artwork.description}
+            </p>
           </div>
         </motion.div>
       </motion.div>
