@@ -9,7 +9,15 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Use a simple state to ensure the modal stays on top
+  // Simplest, most compatible scroll lock
+  React.useEffect(() => {
+    if (artwork) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [artwork]);
+
   return (
     <AnimatePresence>
       {artwork && (
@@ -18,36 +26,42 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          // We use 'fixed' and 'top-0 left-0' to bypass body scrolling issues
-          className="fixed top-0 left-0 w-full h-full z-9999 flex items-center justify-center p-0 md:p-8"
-          style={{
-            background: 'rgba(26,42,58,0.85)', // Darker background to hide content behind
-            backdropFilter: 'none' // Disable blur to ensure speed on older iPhones
-          }}
+          // z-100 and fixed inset-0 pins it to the screen regardless of scroll
+          className="fixed inset-0 z-100 flex items-center justify-center"
+          style={{ background: 'rgba(26,42,58,0.8)' }}
           onClick={onClose}
         >
+          {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-5 right-5 z-10000 p-2 rounded-full"
-            style={{ background: '#F49CBB', color: '#FFFFFF' }}
+            className="absolute top-4 right-4 z-101 p-2 bg-[#F49CBB] rounded-full text-white shadow-lg"
           >
-            <X size={22} />
+            <X size={24} />
           </button>
 
+          {/* Panel */}
           <motion.div
             key="lightbox-panel"
-            className="w-full h-full md:h-auto md:max-w-5xl md:max-h-[85vh] flex flex-col md:flex-row bg-white overflow-y-auto"
+            initial={{ scale: 0.95 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.95 }}
+            className="w-full h-full md:h-auto md:max-w-5xl md:max-h-[90vh] bg-white flex flex-col md:flex-row overflow-hidden md:rounded-2xl shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image */}
-            <div className="w-full md:w-3/5 h-1/2 md:h-auto relative flex items-center justify-center bg-gray-100">
+            {/* Image container */}
+            <div className="w-full md:w-3/5 h-1/2 md:h-auto relative flex items-center justify-center bg-gray-50">
               <img src={artwork.imageUrl} alt={artwork.title} className="w-full h-full object-contain" />
             </div>
 
-            {/* Info */}
-            <div className="w-full md:w-2/5 p-6 overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
-              <p className="text-sm whitespace-pre-wrap text-gray-700">{artwork.description}</p>
+            {/* Info container */}
+            <div className="w-full md:w-2/5 p-6 flex flex-col overflow-y-auto">
+              <h2 className="font-serif text-2xl font-bold mb-4">{artwork.title}</h2>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {artwork.tags.map((tag, i) => (
+                  <span key={i} className="bg-gray-100 px-3 py-1 text-xs font-medium rounded-full">{tag}</span>
+                ))}
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{artwork.description}</p>
             </div>
           </motion.div>
         </motion.div>
