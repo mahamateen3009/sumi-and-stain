@@ -180,9 +180,8 @@ export const DemoGallery: React.FC = () => {
         {DEMO_ARTWORKS.map((a, i) => (
           <div
             key={a.id}
-            onClick={() => {
-              if (window.innerWidth >= 768) setSelected(a);
-            }}
+            className="pointer-events-none md:pointer-events-auto"
+            onClick={() => setSelected(a)}
           >
             <DemoCard artwork={a} onOpen={setSelected} index={i} />
           </div>

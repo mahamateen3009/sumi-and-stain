@@ -17,15 +17,11 @@ export const GalleryGrid: React.FC<GalleryGridProps> = ({ artworks, emptyMessage
         {artworks.map((artwork) => (
           <div
             key={artwork.id}
-            className="cursor-pointer"
-            onClick={() => {
-              // Only trigger the lightbox on desktop screens (768px+)
-              if (window.innerWidth >= 768) {
-                setSelected(artwork);
-              }
-            }}
+            // 'pointer-events-none' on mobile stops ALL clicks. 
+            // 'md:pointer-events-auto' enables them on desktop.
+            className="cursor-pointer pointer-events-none md:pointer-events-auto"
+            onClick={() => setSelected(artwork)}
           >
-            {/* 'onClick' prop is now correctly passed */}
             <ArtworkCard artwork={artwork} onClick={setSelected} />
           </div>
         ))}
