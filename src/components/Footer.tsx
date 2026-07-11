@@ -42,7 +42,7 @@ export const Footer = () => {
   return (
     <footer className="mt-20 relative overflow-hidden" style={{ background: FOOTER_BG, borderTop: '3px solid rgba(255, 255, 255, 0.20)' }}>
       <div className="container mx-auto px-6 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-20">
+        < div className="grid grid-cols-3 gap-6 lg:gap-20">
 
           <div className="md:col-span-1">
             <h3 className="font-serif text-xl font-bold mb-4" style={{ color: FG }}>About Me</h3>
