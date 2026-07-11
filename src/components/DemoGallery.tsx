@@ -172,32 +172,22 @@ const DemoLightbox = ({
 
 /* ── Export ───────────────────────────────────────────────────────── */
 export const DemoGallery: React.FC = () => {
-  const [selected, setSelected] = useState<(typeof DEMO_ARTWORKS)[number] | null>(null);
+  const [selected, setSelected] = React.useState<any | null>(null);
 
   return (
     <>
-      {/* Explanatory notice */}
-      <div
-        className="mb-8 px-5 py-3 rounded-xl text-sm text-center"
-        style={{
-          background: 'rgba(175, 210, 233, 0.30)',
-          border: '1px dashed rgba(227, 99, 151, 0.45)',
-          color: 'rgba(26, 42, 58, 0.72)',
-        }}
-      >
-        These are preview cards. Add your artworks in the{' '}
-        <a href="/admin" className="underline underline-offset-2" style={{ color: '#E36397' }}>
-          Admin Dashboard
-        </a>{' '}
-        and they will replace this section automatically.
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
         {DEMO_ARTWORKS.map((a, i) => (
-          <DemoCard key={a.id} artwork={a} onOpen={setSelected} index={i} />
+          <div
+            key={a.id}
+            onClick={() => {
+              if (window.innerWidth >= 768) setSelected(a);
+            }}
+          >
+            <DemoCard artwork={a} onOpen={setSelected} index={i} />
+          </div>
         ))}
       </div>
-
       <DemoLightbox artwork={selected} onClose={() => setSelected(null)} />
     </>
   );
