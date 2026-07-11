@@ -9,22 +9,7 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Enhanced scroll lock for iOS
-  React.useEffect(() => {
-    if (artwork) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = '100%';
-    } else {
-      const scrollY = document.body.style.top;
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
-    }
-  }, [artwork]);
-
+  // Use a simple state to ensure the modal stays on top
   return (
     <AnimatePresence>
       {artwork && (
@@ -33,35 +18,37 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          // Added 'h-full' to ensure the backdrop takes full viewport height
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 h-full"
+          // We use 'fixed' and 'top-0 left-0' to bypass body scrolling issues
+          className="fixed top-0 left-0 w-full h-full z-9999 flex items-center justify-center p-0 md:p-8"
           style={{
-            background: 'rgba(26,42,58,0.48)',
-            // Disable backdrop filter on small screens for older iOS stability
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)'
+            background: 'rgba(26,42,58,0.85)', // Darker background to hide content behind
+            backdropFilter: 'none' // Disable blur to ensure speed on older iPhones
           }}
           onClick={onClose}
         >
-          {/* Close button - Ensure it's outside the scrolling panel */}
           <button
             onClick={onClose}
-            className="fixed top-5 right-5 z-[101] p-2 rounded-full transition-opacity hover:opacity-70"
-            style={{ background: 'rgba(244, 156, 187, 0.85)', border: '1px solid rgba(255,255,255,0.35)', color: '#FFFFFF' }}
+            className="absolute top-5 right-5 z-10000 p-2 rounded-full"
+            style={{ background: '#F49CBB', color: '#FFFFFF' }}
           >
             <X size={22} />
           </button>
 
-          {/* Panel */}
           <motion.div
             key="lightbox-panel"
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.95 }}
-            className="glass-panel rounded-2xl overflow-hidden w-full max-w-5xl max-h-[85vh] flex flex-col md:flex-row shadow-2xl"
+            className="w-full h-full md:h-auto md:max-w-5xl md:max-h-[85vh] flex flex-col md:flex-row bg-white overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* ... rest of your code remains same ... */}
+            {/* Image */}
+            <div className="w-full md:w-3/5 h-1/2 md:h-auto relative flex items-center justify-center bg-gray-100">
+              <img src={artwork.imageUrl} alt={artwork.title} className="w-full h-full object-contain" />
+            </div>
+
+            {/* Info */}
+            <div className="w-full md:w-2/5 p-6 overflow-y-auto">
+              <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
+              <p className="text-sm whitespace-pre-wrap text-gray-700">{artwork.description}</p>
+            </div>
           </motion.div>
         </motion.div>
       )}
