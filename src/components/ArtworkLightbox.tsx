@@ -9,20 +9,17 @@ interface ArtworkLightboxProps {
 }
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
-  // Use CSS media query via matchMedia for better performance
-  const [isMobile, setIsMobile] = React.useState(false);
+  // Use CSS media query to determine behavior
+  const [isDesktop, setIsDesktop] = React.useState(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
 
   React.useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    setIsMobile(mediaQuery.matches);
-
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // If mobile, don't even render the logic
-  if (isMobile) return null;
+  // If NOT desktop, render nothing. This prevents the "scattered" iOS view.
+  if (!isDesktop) return null;
 
   return (
     <AnimatePresence>
@@ -32,21 +29,24 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-8"
+          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-12"
           onClick={onClose}
         >
-          {/* Desktop Lightbox content */}
+          {/* Main Container - Keeps the desktop layout you like */}
           <motion.div
             key="lightbox-panel"
-            className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-row overflow-hidden shadow-2xl"
+            className="bg-white rounded-2xl w-full max-w-5xl h-[80vh] flex flex-row overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="w-3/5 bg-gray-50 flex items-center justify-center shrink-0">
-              <img src={artwork.imageUrl} alt={artwork.title} className="max-h-[80vh] object-contain" />
+            {/* Image Side */}
+            <div className="w-3/5 bg-gray-100 flex items-center justify-center">
+              <img src={artwork.imageUrl} alt={artwork.title} className="max-h-full object-contain" />
             </div>
-            <div className="w-2/5 overflow-y-auto p-8">
-              <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap">{artwork.description}</p>
+
+            {/* Content Side */}
+            <div className="w-2/5 overflow-y-auto p-10">
+              <h2 className="text-3xl font-bold mb-6">{artwork.title}</h2>
+              <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{artwork.description}</p>
             </div>
           </motion.div>
         </motion.div>
