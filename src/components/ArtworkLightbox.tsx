@@ -19,7 +19,7 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
       {artwork && (
         <motion.div
           key="lightbox-backdrop"
-          className="fixed inset-0 z-9999 bg-slate-900/95"
+          className="fixed inset-0 z-9999 bg-slate-900/90 flex items-center justify-center p-4"
           onClick={onClose}
         >
           <button
@@ -29,21 +29,26 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
             <X size={24} />
           </button>
 
-          {/* Absolute centered panel instead of flex */}
+          {/* This panel now dynamically grows based on screen size */}
           <motion.div
             key="lightbox-panel"
-            className="absolute top-[5%] left-[5%] w-[90%] h-[90%] bg-white rounded-2xl overflow-hidden shadow-2xl md:top-[10%] md:left-[15%] md:w-[70%] md:h-[80%]"
+            className="bg-white rounded-2xl overflow-hidden shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col md:flex-row"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Image section as absolute block */}
-            <div className="absolute top-0 left-0 w-full h-[50%] bg-gray-100 flex items-center justify-center">
-              <img src={artwork.imageUrl} alt={artwork.title} className="w-full h-full object-contain" />
+            {/* Image section: Set to grow, but min-h-64 so it doesn't vanish */}
+            <div className="w-full md:w-3/5 min-h-300px bg-gray-100 flex items-center justify-center shrink-0">
+              <img src={artwork.imageUrl} alt={artwork.title} className="max-h-[50vh] md:max-h-[80vh] w-full object-contain" />
             </div>
 
-            {/* Info section as absolute block */}
-            <div className="absolute bottom-0 left-0 w-full h-[50%] p-6 overflow-y-auto">
-              <h2 className="text-2xl font-bold mb-2">{artwork.title}</h2>
-              <p className="text-sm text-gray-700 whitespace-pre-wrap">{artwork.description}</p>
+            {/* Info section: This part will scroll if the content is long */}
+            <div className="w-full md:w-2/5 overflow-y-auto p-6 md:p-8">
+              <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {artwork.tags.map((tag, i) => (
+                  <span key={i} className="bg-gray-100 px-3 py-1 text-xs font-medium rounded-full">{tag}</span>
+                ))}
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">{artwork.description}</p>
             </div>
           </motion.div>
         </motion.div>
