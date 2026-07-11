@@ -10,14 +10,8 @@ interface ArtworkLightboxProps {
 
 export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClose }) => {
   useEffect(() => {
-    // Forcing the body to be completely frozen
-    if (artwork) {
-      document.body.style.overflow = 'hidden';
-      document.body.style.height = '100vh';
-    } else {
-      document.body.style.overflow = 'auto';
-      document.body.style.height = 'auto';
-    }
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'auto'; };
   }, [artwork]);
 
   return (
@@ -25,11 +19,7 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
       {artwork && (
         <motion.div
           key="lightbox-backdrop"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          // Added 'touch-none' and 'overscroll-none' to kill Safari's scroll propagation
-          className="fixed inset-0 z-9999 flex items-center justify-center bg-slate-900/95 touch-none overscroll-none"
+          className="fixed inset-0 z-9999 bg-slate-900/95"
           onClick={onClose}
         >
           <button
@@ -39,20 +29,20 @@ export const ArtworkLightbox: React.FC<ArtworkLightboxProps> = ({ artwork, onClo
             <X size={24} />
           </button>
 
+          {/* Absolute centered panel instead of flex */}
           <motion.div
             key="lightbox-panel"
-            className="w-full h-full md:w-[80vw] md:h-[80vh] bg-white flex flex-col md:flex-row overflow-hidden md:rounded-2xl"
+            className="absolute top-[5%] left-[5%] w-[90%] h-[90%] bg-white rounded-2xl overflow-hidden shadow-2xl md:top-[10%] md:left-[15%] md:w-[70%] md:h-[80%]"
             onClick={(e) => e.stopPropagation()}
-            style={{ touchAction: 'none' }}
           >
-            {/* Image section */}
-            <div className="w-full h-[40vh] md:h-full md:w-3/5 bg-gray-100 flex items-center justify-center shrink-0">
+            {/* Image section as absolute block */}
+            <div className="absolute top-0 left-0 w-full h-[50%] bg-gray-100 flex items-center justify-center">
               <img src={artwork.imageUrl} alt={artwork.title} className="w-full h-full object-contain" />
             </div>
 
-            {/* Content section */}
-            <div className="w-full flex-1 overflow-y-auto p-6">
-              <h2 className="text-2xl font-bold mb-4">{artwork.title}</h2>
+            {/* Info section as absolute block */}
+            <div className="absolute bottom-0 left-0 w-full h-[50%] p-6 overflow-y-auto">
+              <h2 className="text-2xl font-bold mb-2">{artwork.title}</h2>
               <p className="text-sm text-gray-700 whitespace-pre-wrap">{artwork.description}</p>
             </div>
           </motion.div>
